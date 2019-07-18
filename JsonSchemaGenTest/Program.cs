@@ -58,6 +58,25 @@ This is what our schema should look like
 }
              */
 
+
+            var testJson = @"[
+    {
+        ""id"":1,
+        ""value"":""one"",
+        ""enabled"":false
+    },
+    {
+        ""id"":2,
+        ""value"":""two"",
+        ""enabled"":true
+    }
+]";
+
+            var testSchema = JsonSchema.FromSampleJson(testJson);
+
+            var testSchemaJson = testSchema.ToJson();
+            Console.WriteLine(testSchemaJson); 
+
             var objectSchema = new JsonSchema();
             objectSchema.Type = JsonObjectType.Object;
             objectSchema.Title = "DataRowElement";
@@ -73,14 +92,13 @@ This is what our schema should look like
             arraySchema.Type = JsonObjectType.Array;
             arraySchema.Definitions["DataRowElement"] = objectSchema;
 
+            // Aha, now we set the "item" of our outer array schema to a reference to our inner schema
+            arraySchema.Item = new JsonSchema { Reference = objectSchema };
+
             schemaJson = arraySchema.ToJson();
             Console.WriteLine(schemaJson);
-            Console.WriteLine("This is where we fall down, how do we reference our `DataRowElement` schema definition as our array `items` reference?");
-            Console.WriteLine(@"This part is missing
->>>     ""items"": {
->>>        ""$ref"": ""#/definitions/DataRowElement""
->>>     },"
-);
+
+            Console.WriteLine("Success");
 
             Console.WriteLine("Any key to exit");
             Console.ReadKey();
