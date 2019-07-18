@@ -76,7 +76,11 @@ This is what our schema should look like
             schemaJson = arraySchema.ToJson();
             Console.WriteLine(schemaJson);
             Console.WriteLine("This is where we fall down, how do we reference our `DataRowElement` schema definition as our array `items` reference?");
-
+            Console.WriteLine(@"This part is missing
+>>>     ""items"": {
+>>>        ""$ref"": ""#/definitions/DataRowElement""
+>>>     },"
+);
 
             Console.WriteLine("Any key to exit");
             Console.ReadKey();
